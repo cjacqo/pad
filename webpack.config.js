@@ -12,10 +12,16 @@ module.exports = {
     // asset management
     module: {
         rules: [
+            // CSS Styles
             {
                 test: /\.css$/i,
                 // add the npm packages in this array
                 use: ['style-loader', 'css-loader']
+            },
+            // Image Assets
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource'
             }
         ]
     }
