@@ -8,5 +8,15 @@ module.exports = {
         filename: 'bundle.js',
         // helps resolve the path name to the bundle folder
         path: path.resolve(__dirname, 'dist')
+    },
+    // asset management
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                // add the npm packages in this array
+                use: ['style-loader', 'css-loader']
+            }
+        ]
     }
 }
