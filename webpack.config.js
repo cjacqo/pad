@@ -1,16 +1,28 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const toml = require('toml')
 const yaml = require('yamljs')
 const json5 = require('json5')
 
 module.exports = {
     // set the entry to the path of the output file for the app/code in the 'src' folder
-    entry: './src/index.js',
+    // - if you want to split entries, create an object that stores a key/value pair of entryName/entryPath
+    entry: {
+        index: './src/index.js'
+    },
+    // plugins
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'Output Management'
+        })
+    ],
     // set the output to the path of the input file in the bundle folder, 'dist'
     output: {
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
         // helps resolve the path name to the bundle folder
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        // clean the dist folder on each save
+        clean: true
     },
     // asset management
     module: {
