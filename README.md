@@ -45,3 +45,6 @@ Steps to Recreate:
                       for any package not used, uninstall the package, and remove the related rule(s) object in rules array
               ~ ex. 'module: { rules: [] } ~
 5:: 
+
+
+TO UNINSTALL PACKAGES FOR ASSET MANAGEMENT (css, data, etc.): npm uninstall css-loader style-loader csv-loader xml-loader toml yamljs json5
