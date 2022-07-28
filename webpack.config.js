@@ -10,7 +10,8 @@ module.exports = {
     // set the entry to the path of the output file for the app/code in the 'src' folder
     // - if you want to split entries, create an object that stores a key/value pair of entryName/entryPath
     entry: {
-        index: './src/index.js'
+        index: './src/index.js',
+        // opmgmt: './src/opmgmt.js'
     },
     // sourcemaps; helps with debugging
     devtool: 'inline-source-map',
