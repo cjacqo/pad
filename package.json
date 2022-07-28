@@ -1,0 +1,20 @@
+{
+  "name": "webpack-default",
+  "version": "1.0.0",
+  "description": "A default project setup for webpack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cjacqo/webpack-default.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cjacqo/webpack-default/issues"
+  },
+  "homepage": "https://github.com/cjacqo/webpack-default#readme"
+}
