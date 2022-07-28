@@ -21,6 +21,8 @@ Steps to Recreate:
         + json5          (--save-dev)
     - Output Management
         + html-webpack-plugin (--save-dev)
+    - Development Server
+        + webpack-dev-server (--save-dev)
 
 3:: create the following directories and files...
     - Bundle
@@ -43,17 +45,26 @@ Steps to Recreate:
             * html-webpack-plugin
             * toml, yaml, json5 (if using these data parsers; uninstall these packages if they will not be used, and remove these line from this file)
         + create a module.exports object that handles the following...
-            * entry: the app's code/components/content output file/path
+            * mode: using 'development' by default
+            * entry: the app's code/components/content output file/path; can be an object with multiple
               ~ ex. './src/index.js' ~
+            * devtool: sourcemaps to help debug; 'inline-source-map'
+            * devServer: object to watch on file saves
+              ~ ex. 'devServer: { static: './dist' }'
             * plugins: an array that initiates a new HtmlWebpackPlugin() within the array
               ~ ex. 'plugins: [ new HtmlWebpackPlugin({ title: 'TITLE' }) ]
-            * output: object with properties for the bundle file name, and the path handler from required 'path'
+            * output: object with properties for the bundle file name, and the path handler from required 'path', and clean set to true (keeps ./dist clean)
               ~ ex. 'output: { filename: 'bundle.js', path: path.resolve(__dirname, 'BUNDLE FOLDER NAME (dist)') }
+            * optimization: handles chuncks when multiple entries are in entry object
+              ~ ex. 'optimization: { runtimeChunk: 'single' }'
             * module: object with a property of 'rules' that is an array of rules; this is where asset management packages will NEED to have rules set
                       for any package not used, uninstall the package, and remove the related rule(s) object in rules array
               ~ ex. 'module: { rules: [] } ~
 
-5:: 
+5:: add the following scrips to package.json...
+    - "watch": "webpack --watch",
+    - "start": "webpack server --open",
+    - "build": "webpack"
 
 
 TO UNINSTALL PACKAGES FOR ASSET MANAGEMENT (css, data, etc.): npm uninstall css-loader style-loader csv-loader xml-loader toml yamljs json5

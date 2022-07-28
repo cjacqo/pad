@@ -5,15 +5,23 @@ const yaml = require('yamljs')
 const json5 = require('json5')
 
 module.exports = {
+    // set mode
+    mode: 'development',
     // set the entry to the path of the output file for the app/code in the 'src' folder
     // - if you want to split entries, create an object that stores a key/value pair of entryName/entryPath
     entry: {
         index: './src/index.js'
     },
+    // sourcemaps; helps with debugging
+    devtool: 'inline-source-map',
+    // dev server to watch on file saves
+    devServer: {
+        static: './dist'
+    },
     // plugins
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Output Management'
+            title: 'Development'
         })
     ],
     // set the output to the path of the input file in the bundle folder, 'dist'
@@ -23,6 +31,10 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         // clean the dist folder on each save
         clean: true
+    },
+    // handles multiple entry points in entry object
+    optimization: {
+        runtimeChunk: 'single'
     },
     // asset management
     module: {
