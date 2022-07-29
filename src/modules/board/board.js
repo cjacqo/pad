@@ -1,18 +1,20 @@
 import { Graph } from '../graph'
+import PuzzlePieces from '../pieces/data'
+import { Piece, PieceTest } from '../pieces/piece'
 import './style.css'
 
-class Piece {
-    constructor(matrix) {
-        this.m = matrix
-    }
+// class PieceTest {
+//     constructor(matrix) {
+//         this.m = matrix
+//     }
 
-    draw() {
-        for (let i = 0; i < this.m.length; i++) {
-            const value = this.m[i]
-            console.log(value)
-        }
-    }
-}
+//     draw() {
+//         for (let i = 0; i < this.m.length; i++) {
+//             const value = this.m[i]
+//             console.log(value)
+//         }
+//     }
+// }
 
 const Pieces = [
     [
@@ -194,7 +196,7 @@ class Board {
 
     #buildPieces() {
         for (let i = 0; i < Pieces.length; i++) {
-            const p = new Piece(Pieces[i])
+            // const p = new PieceTest(Pieces[i])
         }
     }
 
@@ -222,6 +224,13 @@ class Board {
     }
 
     buildPuzzle() {
+        const pieces = PuzzlePieces.map(data => {
+            const { name, id, matrix } = data
+            const p = new PieceTest({ name, id, matrix })
+            p.init()
+            return p.rotationsArr
+        })
+        console.log(pieces)
         this.#buildBoard()
         this.#buildStartPannel()
         this.#buildPieces()
