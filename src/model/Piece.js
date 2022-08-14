@@ -1,9 +1,11 @@
 import Cell from "./Cell"
 
-function Piece(name, matrix) {
+function Piece(name, matrix, color) {
     const obj = {}
     obj.name = name
     obj.matrix = matrix
+    obj.color = color
+    obj.size = 0
     obj.piece = []
 
     const buildPiece = function() {
@@ -11,6 +13,7 @@ function Piece(name, matrix) {
             const row = []
             for (let c = 0; c < obj.matrix[r].length; c++) {
                 const value = obj.matrix[r][c]
+                if (value === 1) obj.size++
                 const cell = Cell(r, c, value, 'p', obj.name)
                 row.push(cell)
             }
@@ -23,6 +26,9 @@ function Piece(name, matrix) {
         if (obj.piece.length === 0) buildPiece()
         return obj.piece
     }
+
+    obj.getColor = function() { return obj.color }
+    obj.getName = function() { return obj.name }
 
     const findNeighbors = function(r, c, cell) {
         if (r < 0 || r >= obj.piece.length || c < 0 || c >= obj.piece[0].length || obj.piece[r][c].isVisited()) return
@@ -68,6 +74,9 @@ function Piece(name, matrix) {
             }
         }
         return path
+    };
+    obj.getSize = function() {
+        return obj.size
     };
 
     (() => {

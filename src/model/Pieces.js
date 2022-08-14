@@ -8,6 +8,23 @@ const piecesArr = [
             [0, 1, 0, 0]
         ],
         color: 'green',
+    },
+    {
+        name: 'L',
+        matrix: [
+            [1, 1, 1, 1],
+            [0, 0, 0, 1]
+        ],
+        color: 'blue'
+    },
+    {
+        name: 'B',
+        matrix: [
+            [1, 0],
+            [1, 1],
+            [1, 1]
+        ],
+        color: 'red'
     }
 ]
 
@@ -18,8 +35,8 @@ const Pieces = () => {
 
     const buildPieces = function() {
         obj.pieces = piecesArr.map(p => {
-            const { name, matrix } = p
-            const piece = Piece(name, matrix)
+            const { name, matrix, color } = p
+            const piece = Piece(name, matrix, color)
             return piece
         })
     }

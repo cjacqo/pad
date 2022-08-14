@@ -13,11 +13,13 @@ function Cell(r, c, v, t, text) {
         text,
         neighbors: {},
         visited: false,
+        edges: [],
         getCoordinates: function() { return [r, c] },
         getCell: function() { return this },
         getText: function() { return text },
         getValue: function() { return v },
         getNeighbors: function() { return this.neighbors },
+        getNeighborsByKey: function(key) { return this.neighbors[key] },
         hasNeighbors: function() {
             for (var prop in this.neighbors) {
                 if (Object.prototype.hasOwnProperty.call(this.neighbors, prop)) {

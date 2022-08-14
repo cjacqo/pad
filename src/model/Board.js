@@ -67,6 +67,24 @@ const Board = () => {
         }
     }
 
+    const buildMask = function(cell, dir, max) {
+        const visited = new Set([ cell ])
+        const queue = [ [cell, dir.shift(), 0 ] ]
+
+        while (queue.length > 0) {
+            const [ node, directions, distance ] = queue.shift()
+            if (node === undefined || visited.size === max) return visited
+            for (let d = 0; d < directions.length; d++) {
+                const next = node.getNeighborsByKey(directions[d])
+                if (next === undefined) return visited
+                if (!visited.has(next)) {
+                    visited.add(next)
+                    queue.push([ next, dir.shift(), distance + 1 ])
+                }
+            }
+        }
+    }
+
     obj.handleSelection = function(cell) {
         console.log(cell.getValue())
         console.log(cell.isCovered())
@@ -99,12 +117,35 @@ const Board = () => {
 
     obj.getCellAtVertex = function(coordinate) {
         return obj.board[coordinate[0]][coordinate[1]]
-    };
+    }
 
-    // (() => {
-    //     obj.buildBoard()
-    //     buildPaths()
-    // })()
+    obj.placePiece = function(directions, size) {
+        const rowLen = obj.board.length
+        const colLen = obj.board[0].length
+        let max = size
+        console.log(size)
+        // for (let i = 0; i < directions.length; i++) {
+        //     for (let j = 0; j < directions[i].length; j++) {
+        //         max++
+        //     }
+        // }
+
+        let temp = []
+        for (let r = 0; r < rowLen; r++) {
+            for (let c = 0; c < colLen; c++) {
+                /* create a copy of the directions & create a variable for the starting cell */
+                const tempD = [...directions]
+                const cell = obj.board[r][c]
+                let mask
+                if (!cell.isCovered() && !cell.isOOB()) mask = buildMask(cell, tempD, max)
+                if (mask) {
+                    if (mask.size === max) temp.push(mask)
+                }
+                // console.log(temp)
+            }
+        }
+        return temp
+    }
 
     return obj
 }

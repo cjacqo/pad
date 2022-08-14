@@ -121,15 +121,34 @@ const PuzzleControl = () => {
         }
     }
 
-    obj.start = function() {
-        view.displayBoard(board)
+    const loopPieces = function(cb) {
+        pieces.getPieces().forEach(p => {
+            cb(p)
+        })
+    }
 
+    const placePieces = function() {
+        const masks = {}
+        pieces.getPieces().forEach(p => {
+            const path = p.getPath()
+            const directions = [...path.values()]
+            masks[p.getName()] = board.placePiece(directions, p.getSize())
+        })
+        console.log(masks)
+    }
+
+    obj.start = function() {
+        /* render HTML */
+        view.displayPuzzle(board, pieces)
+
+        /* get neighbors for each cell in each matrix (board, pieces) */
         loopMatrix(board.getBoard(), 'board', findNeighbors)
         pieces.getPieces().forEach(p => {
             loopMatrix(p.getPiece(), 'piece', findNeighbors)
         })
-        console.log(board.getBoard())
-        console.log(pieces.getPieces())
+
+        /* find all ways each piece can be placed on an empty board */
+        placePieces()
     }
     
     return obj
