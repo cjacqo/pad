@@ -23,6 +23,49 @@ const Board = () => {
     ]
 
     obj.board = []
+    obj.path = new Map()
+
+    const findNeighbors = function(r, c, cell) {
+        if (r < 0 || r >= obj.board.length || c < 0 || c >= obj.board[0].length || obj.board[r][c].isVisited()) return
+        else if (!cell.isVisited()) {
+            cell.setVisited(true)
+
+            let top, right, bottom, left
+
+            if (c - 1 > 0) {
+                left = obj.board[r][c - 1]
+                if (!left.isOOB() && !left.isVisited() && left.isCovered()) cell.setNeighbor('left', left)
+            }
+            if (c + 1 < obj.board[0].length) {
+                right = obj.board[r][c + 1]
+                if (!right.isOOB() && !right.isVisited() && right.isCovered()) cell.setNeighbor('right', right)
+            }
+            if (r - 1 > 0) {
+                top = obj.board[r - 1][c]
+                if (!top.isOOB() && !top.isVisited() && top.isCovered()) cell.setNeighbor('top', top)
+            }
+            if (r + 1 < obj.board.length) {
+                bottom = obj.board[r + 1][c]
+                if (!bottom.isOOB() && !bottom.isVisited() && bottom.isCovered()) cell.setNeighbor('bottom', bottom)
+            }
+        }
+    }
+
+    const buildPaths = function() {
+        const rowLen = obj.board.length
+        const colLen = obj.board[0].length
+        let edge = 0
+        for (let r = 0; r < rowLen; r++) {
+            for (let c = 0; c < colLen; c++) {
+                const cell = obj.board[r][r]
+                if (!cell.isCovered() || !cell.isVisited() || !cell.isOOB()) findNeighbors(r, c, cell)
+                // if (cell.hasNeighbors()) {
+                //     const keys = Object.keys(cell.getNeighbors())
+
+                // }
+            }
+        }
+    }
 
     obj.handleSelection = function(cell) {
         console.log(cell.getValue())
@@ -56,7 +99,12 @@ const Board = () => {
 
     obj.getCellAtVertex = function(coordinate) {
         return obj.board[coordinate[0]][coordinate[1]]
-    }
+    };
+
+    // (() => {
+    //     obj.buildBoard()
+    //     buildPaths()
+    // })()
 
     return obj
 }

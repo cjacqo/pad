@@ -6,7 +6,8 @@ const piecesArr = [
         matrix: [
             [1, 1, 1, 1],
             [0, 1, 0, 0]
-        ]
+        ],
+        color: 'green',
     }
 ]
 
@@ -28,8 +29,12 @@ const Pieces = () => {
         return obj.pieces
     }
     obj.getPiece = function(name) {
-        return obj.pieces.filter(p => p.name === name)
-    }
+        return obj.pieces.find(p => p.name === name)
+    };
+
+    (() => {
+        buildPieces()
+    })()
     
     return obj
 }

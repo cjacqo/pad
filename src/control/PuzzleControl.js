@@ -32,7 +32,6 @@ const PuzzleControl = () => {
         // get board based on selection coordinates
         board.buildBoard(month, day)
         printPuzzle()
-        // console.log(board.getBoard()[0][0].getCell())
     }
 
     const printPuzzle = function() {
@@ -44,8 +43,93 @@ const PuzzleControl = () => {
         }
     }
 
+    const placePieceOnBoard = function(p) {
+        const path = p.getPath()
+        const directions = [...path.values()]
+        const boardMatrix = board.getBoard()
+
+        for (let r = 0; r < boardMatrix.length; r++) {
+            for (let c = 0; c < boardMatrix[0].length; c++) {
+                const boardCell = boardMatrix[r][c]
+                console.log(boardCell)
+            }
+        }
+
+        for (let r = 0; r < directions.length; r++) {
+            for (let c = 0; c < directions[r].length; c++) {
+                const current = r
+                console.log(current)
+                console.log(directions[r][(directions[r].length - 1) - c])
+            }
+        }
+    }
+
+    const findNeighbors = function(r, c, cell, rl, cl, m, t) {
+        if (r < 0 || r >= rl || c < 0 || c >= cl || m[r][c].isVisited() || m[r][c].isOOB()) return
+        else if (!cell.isVisited()) {
+            cell.setVisited(true)
+            let top, right, bottom, left
+            if (c - 1 >= 0) {
+                left = m[r][c - 1]
+                if (t === 'piece') {
+                    if (!left.isOOB() && !left.isVisited() && left.isCovered()) cell.setNeighbor('left', left)
+                }
+                if (t === 'board') {
+                    if (!left.isOOB()) cell.setNeighbor('left', left)
+                }
+            }
+            if (c + 1 < m[0].length) {
+                right = m[r][c + 1]
+                if (t === 'piece') {
+                    if (!right.isOOB() && !right.isVisited() && right.isCovered()) cell.setNeighbor('right', right)
+                } else {
+                    if (!right.isOOB() && !right.isCovered()) cell.setNeighbor('right', right)
+                }
+            }
+            if (r - 1 >= 0) {
+                top = m[r - 1][c]
+                if (t === 'piece') {
+                    if (!top.isOOB() && !top.isVisited() && top.isCovered()) cell.setNeighbor('up', top)
+                } else {
+                    if (!top.isOOB() && !top.isCovered()) cell.setNeighbor('up', top)
+                }
+            }
+            if (r + 1 < m.length) {
+                bottom = m[r + 1][c]
+                if (t === 'piece') {
+                    if (!bottom.isOOB() && !bottom.isVisited() && bottom.isCovered()) cell.setNeighbor('down', bottom)
+                } else {
+                    if (!bottom.isOOB() && !bottom.isCovered()) cell.setNeighbor('down', bottom)
+                }
+            }
+        }
+    }
+
+    const loopMatrix = function(m, t, f) {
+        const rowLen = m.length
+        const colLen = m[0].length
+        for (let r = 0; r < rowLen; r++) {
+            for (let c = 0; c < colLen; c++) {
+                const cell = m[r][c]
+                if (t === 'piece') {
+                    if (cell.isCovered() || !cell.isVisited()) f(r, c, cell, rowLen, colLen, m, t)
+                }
+                if (t === 'board') {
+                    if (!cell.isCovered() || !cell.isVisited()) f(r, c, cell, rowLen, colLen, m, t)
+                }
+            }
+        }
+    }
+
     obj.start = function() {
         view.displayBoard(board)
+
+        loopMatrix(board.getBoard(), 'board', findNeighbors)
+        pieces.getPieces().forEach(p => {
+            loopMatrix(p.getPiece(), 'piece', findNeighbors)
+        })
+        console.log(board.getBoard())
+        console.log(pieces.getPieces())
     }
     
     return obj
